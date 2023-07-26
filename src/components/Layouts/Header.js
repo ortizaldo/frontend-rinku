@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { Inter, Rubik, Poppins } from "@next/font/google";
-import clsx from "clsx";
 import { Menubar } from "primereact/menubar";
-import { InputText } from "primereact/inputtext";
 
 export const titleFont = Rubik({
   subsets: ["latin"],
@@ -14,7 +11,7 @@ export const text = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export default function Header() {
+export default function Header({ openModal }) {
   const items = [
     {
       label: "Empleados",
@@ -27,10 +24,12 @@ export default function Header() {
             {
               label: "Empleado",
               icon: "pi pi-fw pi-user",
+              command: () => openModal({ show: true }),
             },
             {
               label: "Captura de movimientos",
               icon: "pi pi-fw pi-briefcase",
+              // onClick: showModal(),
             },
           ],
         },
