@@ -24,7 +24,7 @@ export default function Header({ openModal }) {
             {
               label: "Empleado",
               icon: "pi pi-fw pi-user",
-              command: () => openModal({ show: true }),
+              command: () => openModal({ show: true, newEmployee: true }),
             },
             {
               label: "Captura de movimientos",
