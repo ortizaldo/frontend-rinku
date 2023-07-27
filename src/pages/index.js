@@ -1,4 +1,5 @@
 import { Container, Row } from "react-bootstrap";
+import { SplitButton } from "primereact/splitbutton";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
@@ -38,6 +39,45 @@ export default function Home({ modal, openModal, data, apiURL }) {
     }
   };
 
+  const items = [
+    {
+      label: "Ver movimientos",
+      icon: "pi pi-search",
+      command: () => {
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Delete",
+        //   detail: "Data Deleted",
+        // });
+      },
+    },
+    {
+      label: "Eliminar empleado",
+      icon: "pi pi-times",
+      command: () => {
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Delete",
+        //   detail: "Data Deleted",
+        // });
+      },
+    },
+  ];
+
+  const actionsTemplate = (option) => {
+    return (
+      <div className="flex">
+        <SplitButton
+          text
+          size="small"
+          label="Editar"
+          icon="pi pi-user-edit"
+          model={items}
+        />
+      </div>
+    );
+  };
+
   useEffect(() => {}, [showModal, employees]);
 
   return (
@@ -46,8 +86,9 @@ export default function Home({ modal, openModal, data, apiURL }) {
         <div className="card">
           <DataTable
             value={employees}
-            stripedRows
+            size="small"
             tableStyle={{ minWidth: "50rem" }}
+            stripedRows
           >
             <Column
               field="employeeNumber"
@@ -61,6 +102,13 @@ export default function Home({ modal, openModal, data, apiURL }) {
               header="Rol"
               style={{ width: "25%", textTransform: "capitalize" }}
             ></Column>
+            <Column
+              field="_id"
+              header=""
+              dataType="string"
+              bodyClassName="text-center"
+              body={actionsTemplate}
+            />
           </DataTable>
         </div>
       </Container>

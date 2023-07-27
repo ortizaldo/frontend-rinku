@@ -13,7 +13,7 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
   const [err, setErr] = useState("");
   const [formData, setFormData] = useState({});
 
-  const showToastError = (severity, summary, detail) => {
+  const showToast = (severity, summary, detail) => {
     toast.current.show({
       severity,
       summary,
@@ -43,9 +43,11 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
         },
       });
 
+      showToast("success", "Empleados", "Se guardo el empleado con exitó");
+
       hdlSave({ show: false });
     } catch (error) {
-      showToastError(
+      showToast(
         "error",
         "Error al guardar",
         "Ocurrió un problema, intente de nuevo"
