@@ -1,29 +1,86 @@
 import { Container, Row } from "react-bootstrap";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal/Modal";
-export default function Home({ modal, openModal }) {
+import axios from "axios";
+export default function Home({ modal, openModal, data, apiURL }) {
   const [showModal, setShowModal] = useState(modal);
+  const [employees, setEmployees] = useState(data);
+  const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState("");
   const handleClose = (value) => {
     setShowModal(value);
     openModal(value);
   };
-  const handleShow = (value) => {
+  const handleSave = (value) => {
     setShowModal(showModal);
     openModal(value);
+    setEmployees([]);
+    getData();
   };
 
-  useEffect(() => {}, [showModal]);
+  const getData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`api/handlerEmployees`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      setEmployees(response.data);
+    } catch (error) {
+      setErr(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {}, [showModal, employees]);
 
   return (
     <>
-      <Container fluid className="p-4"></Container>
+      <Container fluid className="p-4">
+        <div className="card">
+          <DataTable
+            value={employees}
+            stripedRows
+            tableStyle={{ minWidth: "50rem" }}
+          >
+            <Column
+              field="employeeNumber"
+              header="Num. Empleado"
+              style={{ width: "25%" }}
+            ></Column>
+            <Column field="firstName" header="Nombre"></Column>
+            <Column field="lastName" header="Apellidos"></Column>
+            <Column
+              field="employeeRol"
+              header="Rol"
+              style={{ width: "25%", textTransform: "capitalize" }}
+            ></Column>
+          </DataTable>
+        </div>
+      </Container>
       {modal && (
         <Modal
           hdlClose={handleClose}
-          hdlShow={handleShow}
+          hdlSave={handleSave}
           modal={modal}
         ></Modal>
       )}
     </>
   );
 }
+
+export const getStaticProps = async () => {
+  const response = await axios.get(process.env.API_URL + "employees");
+  return {
+    props: {
+      data: response.data,
+      apiURL: process.env.API_URL,
+    },
+  };
+};

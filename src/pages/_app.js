@@ -18,7 +18,7 @@ function RinkuApp({ Component, pageProps }) {
   return (
     <>
       <Header openModal={isOpenModal} />
-      <Component openModal={isOpenModal} modal={modal} />
+      <Component openModal={isOpenModal} modal={modal} {...pageProps} />
     </>
   );
 }

@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
-export default function FormNewEmployee(props) {
+export default function FormNewEmployee({ getDataForm }) {
+  const [formData, setFormData] = useState({});
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+    getDataForm(formData);
+  };
+
   return (
-    <Form>
+    <Form id="formNewEmployee">
       <div className="row p-2">
         <div className="col-6">
           <div className="p-inputgroup">
             <span className="p-inputgroup-addon">
               <i className="pi pi-hashtag"></i>
             </span>
-            <Form.Control placeholder="Num. de empleado" />
+            <Form.Control
+              type="number"
+              id="employeeNumber"
+              name="employeeNumber"
+              onChange={handleChange}
+              placeholder="Num. de empleado"
+            />
           </div>
         </div>
       </div>
@@ -20,7 +35,12 @@ export default function FormNewEmployee(props) {
             <span className="p-inputgroup-addon">
               <i className="pi pi-user"></i>
             </span>
-            <Form.Control placeholder="Nombre" />
+            <Form.Control
+              id="firstName"
+              name="firstName"
+              placeholder="Nombre"
+              onChange={handleChange}
+            />
           </div>
         </div>
         <div className="col-6">
@@ -28,7 +48,12 @@ export default function FormNewEmployee(props) {
             <span className="p-inputgroup-addon">
               <i className="pi pi-user"></i>
             </span>
-            <Form.Control placeholder="Apellidos" />
+            <Form.Control
+              id="lastName"
+              name="lastName"
+              onChange={handleChange}
+              placeholder="Apellidos"
+            />
           </div>
         </div>
       </div>
@@ -38,12 +63,17 @@ export default function FormNewEmployee(props) {
             <span className="p-inputgroup-addon">
               <i className="pi pi-id-card"></i>
             </span>
-            <Form.Select aria-label="Default select example">
-              <option value="0">Seleccionar rol</option>
+            <Form.Control
+              id="employeeRol"
+              name="employeeRol"
+              as="select"
+              onChange={handleChange}
+            >
+              <option value="">Choose...</option>
               <option value="chofer">Chofer</option>
               <option value="cargador">Cargador</option>
               <option value="auxiliar">Auxiliar</option>
-            </Form.Select>
+            </Form.Control>
           </div>
         </div>
       </div>
