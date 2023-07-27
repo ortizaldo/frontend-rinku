@@ -33,11 +33,6 @@ export default function Header({ openModal }) {
             },
           ],
         },
-        {
-          label: "Listado",
-          icon: "pi pi-fw pi-list",
-          url: "/",
-        },
       ],
     },
   ];
