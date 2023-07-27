@@ -2,7 +2,6 @@ import { Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal/Modal";
 export default function Home({ modal, openModal }) {
-  console.log("🚀 ~ file: index.js:5 ~ Home ~ modal:", modal);
   const [showModal, setShowModal] = useState(modal);
   const handleClose = (value) => {
     setShowModal(value);
