@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import FormNewEmployee from "../FormNewEmployee";
+import FormNewEmployee from "../Forms/FormNewEmployee";
 
 export default function ModalComponent({ modal, hdlClose, hdlShow }) {
   console.log("🚀 ~ file: Modal.js:7 ~ ModalComponent ~ modal:", modal);
