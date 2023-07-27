@@ -5,7 +5,6 @@ import Modal from "react-bootstrap/Modal";
 import FormNewEmployee from "../Forms/FormNewEmployee";
 
 export default function ModalComponent({ modal, hdlClose, hdlShow }) {
-  console.log("🚀 ~ file: Modal.js:7 ~ ModalComponent ~ modal:", modal);
   const handleClose = () => {
     hdlClose({ show: false });
   };
