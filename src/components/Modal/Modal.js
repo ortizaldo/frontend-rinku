@@ -13,6 +13,7 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
   const [formData, setFormData] = useState({});
+  const [formDataMovement, setFormDataMovement] = useState({});
 
   const showToast = (severity, summary, detail) => {
     toast.current.show({
@@ -74,9 +75,14 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
           <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {modal.newEmployee && <FormNewEmployee getDataForm={getDataForm} />}
+          {modal.newEmployee && (
+            <FormNewEmployee getDataForm={getDataForm} formData={formData} />
+          )}
           {modal.newMovement && (
-            <FormNewMovementEmployee getDataForm={getDataForm} />
+            <FormNewMovementEmployee
+              getDataForm={getDataForm}
+              formData={formDataMovement}
+            />
           )}
         </Modal.Body>
         <Modal.Footer>

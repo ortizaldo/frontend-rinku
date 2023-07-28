@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
-export default function FormNewMovementEmployee({ getDataForm }) {
-  const [formData, setFormData] = useState({});
+export default function FormNewMovementEmployee({ getDataForm, formData }) {
+  // const [formData, setFormData] = useState({});
   const handleChange = (event) => {
-    setFormData({
+    getDataForm({
       ...formData,
       [event.target.name]: event.target.value,
     });
-    getDataForm(formData);
+    // getDataForm(formData);
   };
 
   return (
