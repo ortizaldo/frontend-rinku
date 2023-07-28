@@ -1,12 +1,14 @@
 import axios from "axios";
+import QueryString from "qs";
 
 export default async function handler(req, res) {
   const { method } = req;
-  const { body } = req;
-  let baseURL = `${process.env.API_URL}${body.type ? body.type : "employees"}`;
+  const { type } = req.query;
+  const { paramsToURL } = req.query;
+
+  let baseURL = `${process.env.API_URL}${type}`;
 
   const options = {
-    method: method,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -30,15 +32,13 @@ export default async function handler(req, res) {
       case "DELETE":
         break;
       case "GET":
-        response = await axios.get(baseURL, options);
+        response = await axios.get(baseURL + "?" + paramsToURL, options);
         break;
       default:
         break;
     }
     return res.status(200).json(response.data);
   } catch (error) {
-    return res
-      .status(error.response.status)
-      .json({ error: error.response.data.err });
+    return res.status(400).json({ error });
   }
 }

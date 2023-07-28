@@ -2,10 +2,14 @@ import { Container, Row } from "react-bootstrap";
 import { SplitButton } from "primereact/splitbutton";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Sidebar } from "primereact/sidebar";
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal/ModalForm";
 import axios from "axios";
+import { Button } from "primereact/button";
+import QueryString from "qs";
 export default function Home({ modal, openModal, data }) {
+  const [visibleRight, setVisibleRight] = useState(false);
   const [showModal, setShowModal] = useState(modal);
   const [employees, setEmployees] = useState(data);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +28,7 @@ export default function Home({ modal, openModal, data }) {
   const getData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`api/handlerEmployees`, {
+      const response = await axios.get(`api/handlerEmployees?type=employees`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -39,32 +43,61 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
+  const getDataMovements = async (employee) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`api/handlerEmployees`, {
+        params: {
+          type: "employee-movements",
+          paramsToURL: QueryString.stringify({
+            populate: ["employee"],
+            filtersId: {
+              employee: {
+                value: employee,
+              },
+            },
+          }),
+        },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      // setEmployees(response.data);
+      console.log(
+        "%cindex.js line:56 response.data",
+        "color: #007acc;",
+        response.data
+      );
+    } catch (error) {
+      setErr(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const items = [
     {
       label: "Ver movimientos",
       icon: "pi pi-search",
-      command: () => {
-        // toast.current.show({
-        //   severity: "warn",
-        //   summary: "Delete",
-        //   detail: "Data Deleted",
-        // });
+      command: (e) => {
+        console.log("🚀 ~ file: index.js:76 ~ Home ~ e:", e);
+        setVisibleRight(true);
+        getDataMovements(e.item.data._id);
       },
     },
     {
       label: "Eliminar empleado",
       icon: "pi pi-times",
-      command: () => {
-        // toast.current.show({
-        //   severity: "warn",
-        //   summary: "Delete",
-        //   detail: "Data Deleted",
-        // });
-      },
+      command: (e) => {},
     },
   ];
 
   const actionsTemplate = (option) => {
+    items.map((item) => {
+      item.data = option;
+    });
     return (
       <div className="flex">
         <SplitButton
@@ -84,6 +117,11 @@ export default function Home({ modal, openModal, data }) {
     <>
       <Container fluid className="p-4">
         <div className="card">
+          <Sidebar
+            visible={visibleRight}
+            position="right"
+            onHide={() => setVisibleRight(false)}
+          ></Sidebar>
           <DataTable
             value={employees}
             size="small"

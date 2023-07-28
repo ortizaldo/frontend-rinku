@@ -48,8 +48,7 @@ export default function ModalComponent({
     const data = modal && modal.newEmployee ? formData : formDataMovement;
     setIsLoading(true);
     try {
-      data.type = type;
-      await axios.post(`api/handlerEmployees`, data, {
+      await axios.post(`api/handlerEmployees?type=${type}`, data, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
