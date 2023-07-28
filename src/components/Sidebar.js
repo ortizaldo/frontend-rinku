@@ -26,30 +26,31 @@ export default function SidebarComponent({
 
   const getDataMovements = async (month) => {
     try {
-      const response = await axios.get(`api/handlerEmployees`, {
-        params: {
-          type: "employee-movements",
-          paramsToURL: QueryString.stringify({
-            populate: ["employee"],
-            filter: {
-              month: {
-                $in: [month],
-              },
-            },
-            sort: { month: 1 },
-            filtersId: {
-              employee: {
-                value: employee._id,
-              },
-            },
-          }),
+      const response = await axios.post(
+        `api/handlerEmployees`,
+        {
+          month: month,
+          employee: employee._id,
+          rol: employee.rol,
         },
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      setMovementEmployees(response.data);
+        {
+          params: {
+            type: "employee-salary",
+            typePost: "/get-salary",
+          },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(
+        "%cSidebar.js line:43 response.data",
+        "color: #007acc;",
+        response.data
+      );
+      response.data.data.month = month;
+      setMovementEmployees([response.data.data]);
     } catch (error) {
       setErr(error.message);
     }
@@ -94,13 +95,28 @@ export default function SidebarComponent({
               style={{ width: "25%" }}
             ></Column>
             <Column
-              field="numberDeliveries"
-              header="# Entregas"
+              field="numeroDeEntregas"
+              header="Entregas"
               style={{ width: "25%" }}
             ></Column>
             <Column
-              field="numberHours"
-              header="# Horas"
+              field="horasTrabajadas"
+              header="Horas trabajadas"
+              style={{ width: "25%" }}
+            ></Column>
+            <Column
+              field="horasExtras"
+              header="Horas extras"
+              style={{ width: "25%" }}
+            ></Column>
+            <Column
+              field="horasFaltantes"
+              header="Horas faltantes"
+              style={{ width: "25%" }}
+            ></Column>
+            <Column
+              field="salarioMensual"
+              header="Salario"
               style={{ width: "25%" }}
             ></Column>
           </DataTable>
