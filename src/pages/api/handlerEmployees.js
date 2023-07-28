@@ -1,10 +1,10 @@
 import axios from "axios";
-import QueryString from "qs";
 
 export default async function handler(req, res) {
   const { method } = req;
   const { type } = req.query;
   const { paramsToURL } = req.query;
+  const { body } = req;
 
   let baseURL = `${process.env.API_URL}${type}`;
 
@@ -15,9 +15,6 @@ export default async function handler(req, res) {
     },
   };
 
-  if (method === "POST" || method === "PUT" || method === "PATCH") {
-    options.body = JSON.stringify(req.body);
-  }
   let response;
   try {
     switch (method) {

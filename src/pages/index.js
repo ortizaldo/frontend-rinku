@@ -11,7 +11,6 @@ export default function Home({ modal, openModal, data }) {
   const [visibleRight, setVisibleRight] = useState(false);
   const [showModal, setShowModal] = useState(modal);
   const [employees, setEmployees] = useState(data);
-  const [movementEmployees, setMovementEmployees] = useState([]);
   const [employee, setEmployee] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -44,43 +43,13 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
-  const getDataMovements = async (employee, dataEmployee) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`api/handlerEmployees`, {
-        params: {
-          type: "employee-movements",
-          paramsToURL: QueryString.stringify({
-            populate: ["employee"],
-            filtersId: {
-              employee: {
-                value: employee,
-              },
-            },
-          }),
-        },
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      setMovementEmployees(response.data);
-      setEmployee(dataEmployee);
-    } catch (error) {
-      setErr(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const items = [
     {
       label: "Ver movimientos",
       icon: "pi pi-search",
       command: (e) => {
         setVisibleRight(true);
-        getDataMovements(e.item.data._id, e.item.data);
+        setEmployee(e.item.data);
       },
     },
     {
@@ -116,7 +85,6 @@ export default function Home({ modal, openModal, data }) {
           <SidebarComponent
             visibleRight={visibleRight}
             setVisible={() => setVisibleRight(false)}
-            data={movementEmployees}
             employee={employee}
           />
           <DataTable
