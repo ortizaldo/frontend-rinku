@@ -2,16 +2,17 @@ import { Container, Row } from "react-bootstrap";
 import { SplitButton } from "primereact/splitbutton";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Sidebar } from "primereact/sidebar";
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal/ModalForm";
 import axios from "axios";
-import { Button } from "primereact/button";
 import QueryString from "qs";
+import SidebarComponent from "@/components/Sidebar";
 export default function Home({ modal, openModal, data }) {
   const [visibleRight, setVisibleRight] = useState(false);
   const [showModal, setShowModal] = useState(modal);
   const [employees, setEmployees] = useState(data);
+  const [movementEmployees, setMovementEmployees] = useState([]);
+  const [employee, setEmployee] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
   const handleClose = (value) => {
@@ -43,7 +44,7 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
-  const getDataMovements = async (employee) => {
+  const getDataMovements = async (employee, dataEmployee) => {
     setIsLoading(true);
     try {
       const response = await axios.get(`api/handlerEmployees`, {
@@ -64,12 +65,8 @@ export default function Home({ modal, openModal, data }) {
         },
       });
 
-      // setEmployees(response.data);
-      console.log(
-        "%cindex.js line:56 response.data",
-        "color: #007acc;",
-        response.data
-      );
+      setMovementEmployees(response.data);
+      setEmployee(dataEmployee);
     } catch (error) {
       setErr(error.message);
     } finally {
@@ -82,9 +79,8 @@ export default function Home({ modal, openModal, data }) {
       label: "Ver movimientos",
       icon: "pi pi-search",
       command: (e) => {
-        console.log("🚀 ~ file: index.js:76 ~ Home ~ e:", e);
         setVisibleRight(true);
-        getDataMovements(e.item.data._id);
+        getDataMovements(e.item.data._id, e.item.data);
       },
     },
     {
@@ -117,11 +113,12 @@ export default function Home({ modal, openModal, data }) {
     <>
       <Container fluid className="p-4">
         <div className="card">
-          <Sidebar
-            visible={visibleRight}
-            position="right"
-            onHide={() => setVisibleRight(false)}
-          ></Sidebar>
+          <SidebarComponent
+            visibleRight={visibleRight}
+            setVisible={() => setVisibleRight(false)}
+            data={movementEmployees}
+            employee={employee}
+          />
           <DataTable
             value={employees}
             size="small"
