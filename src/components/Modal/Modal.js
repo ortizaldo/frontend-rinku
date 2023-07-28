@@ -6,6 +6,7 @@ import FormNewEmployee from "../Forms/FormNewEmployee";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import _ from "underscore";
+import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
 
 export default function ModalComponent({ modal, hdlClose, hdlSave }) {
   const toast = useRef(null);
@@ -70,15 +71,12 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>
-            {modal.newEmployee ? "Nuevo Empleado" : "Editar Empleado"}
-          </Modal.Title>
+          <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {modal.newEmployee ? (
-            <FormNewEmployee getDataForm={getDataForm} />
-          ) : (
-            "editar empleado"
+          {modal.newEmployee && <FormNewEmployee getDataForm={getDataForm} />}
+          {modal.newMovement && (
+            <FormNewMovementEmployee getDataForm={getDataForm} />
           )}
         </Modal.Body>
         <Modal.Footer>

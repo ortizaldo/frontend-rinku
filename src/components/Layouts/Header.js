@@ -24,12 +24,24 @@ export default function Header({ openModal }) {
             {
               label: "Empleado",
               icon: "pi pi-fw pi-user",
-              command: () => openModal({ show: true, newEmployee: true }),
+              command: () =>
+                openModal({
+                  show: true,
+                  title: "Registro de empleado",
+                  newMovement: false,
+                  newEmployee: true,
+                }),
             },
             {
               label: "Captura de movimientos",
               icon: "pi pi-fw pi-briefcase",
-              // onClick: showModal(),
+              command: () =>
+                openModal({
+                  show: true,
+                  title: "Captura de movimientos",
+                  newEmployee: false,
+                  newMovement: true,
+                }),
             },
           ],
         },
