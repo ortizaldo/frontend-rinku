@@ -5,7 +5,7 @@ import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal/Modal";
 import axios from "axios";
-export default function Home({ modal, openModal, data, apiURL }) {
+export default function Home({ modal, openModal, data }) {
   const [showModal, setShowModal] = useState(modal);
   const [employees, setEmployees] = useState(data);
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +129,6 @@ export const getStaticProps = async () => {
   return {
     props: {
       data: response.data,
-      apiURL: process.env.API_URL,
     },
   };
 };

@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function handler(req, res) {
   const { method } = req;
   const { body } = req;
-  let baseURL = `${process.env.API_URL}employees`;
+  let baseURL = `${process.env.API_URL}${body.type}`;
 
   const options = {
     method: method,

@@ -3,6 +3,14 @@ import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import _ from "underscore";
 
+/**
+ * Renders a form for creating a new movement for an employee.
+ *
+ * @param {Object} getDataForm - a function to update the form data
+ * @param {Object} formData - the current form data
+ * @param {Array} employees - an array of employee objects
+ * @return {JSX.Element} - the rendered form component
+ */
 function FormNewMovementEmployee({ getDataForm, formData, employees }) {
   const [employee, setEmployee] = useState({});
   const [err, setErr] = useState("");
@@ -18,10 +26,16 @@ function FormNewMovementEmployee({ getDataForm, formData, employees }) {
     }
   };
 
+  /**
+   * Generate the options for a select element based on the employees array.
+   *
+   * @return {Array} An array of option elements with the employee names and IDs.
+   */
   const addOptionsToSelect = () => {
     return employees.map((employee) => {
       return (
         <option
+          key={employee._id}
           value={employee._id}
         >{`${employee.firstName} ${employee.lastName}`}</option>
       );

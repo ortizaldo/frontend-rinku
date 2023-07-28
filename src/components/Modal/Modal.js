@@ -33,26 +33,32 @@ export default function ModalComponent({
   };
 
   const handleSave = () => {
-    postData();
+    postData(modal && modal.newEmployee ? "employees" : "employee-movements");
   };
 
   const getDataForm = (_formData) => {
     setFormData(_formData);
   };
 
-  const postData = async () => {
+  const getDataFormEmpMovement = (_formData) => {
+    setFormDataMovement(_formData);
+  };
+
+  const postData = async (type) => {
+    const data = modal && modal.newEmployee ? formData : formDataMovement;
     setIsLoading(true);
     try {
-      await axios.post("api/handlerEmployees", formData, {
+      data.type = type;
+      await axios.post(`api/handlerEmployees`, data, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
       });
 
-      showToast("success", "Empleados", "Se guardo el empleado con exitó");
-
-      hdlSave({ show: false });
+      showToast("success", "Empleados", "Se guardo el registro con exitó");
+      modal.show = false;
+      hdlSave(modal);
     } catch (error) {
       showToast(
         "error",
@@ -85,7 +91,7 @@ export default function ModalComponent({
           )}
           {modal.newMovement && (
             <FormNewMovementEmployee
-              getDataForm={getDataForm}
+              getDataForm={getDataFormEmpMovement}
               formData={formDataMovement}
               employees={employees}
             />
