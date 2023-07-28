@@ -8,7 +8,12 @@ import axios from "axios";
 import _ from "underscore";
 import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
 
-export default function ModalComponent({ modal, hdlClose, hdlSave }) {
+export default function ModalComponent({
+  modal,
+  hdlClose,
+  hdlSave,
+  employees,
+}) {
   const toast = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -82,6 +87,7 @@ export default function ModalComponent({ modal, hdlClose, hdlSave }) {
             <FormNewMovementEmployee
               getDataForm={getDataForm}
               formData={formDataMovement}
+              employees={employees}
             />
           )}
         </Modal.Body>

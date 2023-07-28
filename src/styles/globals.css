@@ -27,3 +27,8 @@ body{
 .p-menubar-root-list{
   margin-left: 1rem !important;
 }
+
+.p-inputtext {
+  padding: 0px !important;
+  padding-left: 10px !important;
+}

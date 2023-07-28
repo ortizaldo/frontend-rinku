@@ -1,82 +1,139 @@
+import { InputNumber } from "primereact/inputnumber";
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import _ from "underscore";
 
-export default function FormNewMovementEmployee({ getDataForm, formData }) {
-  // const [formData, setFormData] = useState({});
+function FormNewMovementEmployee({ getDataForm, formData, employees }) {
+  const [employee, setEmployee] = useState({});
+  const [err, setErr] = useState("");
   const handleChange = (event) => {
     getDataForm({
       ...formData,
       [event.target.name]: event.target.value,
     });
-    // getDataForm(formData);
+
+    if (event.target.name == "employee") {
+      const employee = _.where(employees, { _id: event.target.value })[0];
+      setEmployee(employee);
+    }
+  };
+
+  const addOptionsToSelect = () => {
+    return employees.map((employee) => {
+      return (
+        <option
+          value={employee._id}
+        >{`${employee.firstName} ${employee.lastName}`}</option>
+      );
+    });
   };
 
   return (
-    <Form id="formNewEmployee">
+    <Form id="formNewMovementEmployee">
       <div className="row p-2">
-        <div className="col-6">
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-hashtag"></i>
-            </span>
-            <Form.Control
-              type="number"
-              id="employeeNumber"
-              name="employeeNumber"
-              onChange={handleChange}
-              placeholder="Num. de empleado"
-            />
+        <div className="col-12">
+          <div className="form-group">
+            <label>Empleado:</label>
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                <i className="pi pi-user"></i>
+              </span>
+              <Form.Control
+                id="employee"
+                name="employee"
+                as="select"
+                onChange={handleChange}
+              >
+                <option value="">Seleccionar empleado...</option>
+                {addOptionsToSelect()}
+              </Form.Control>
+            </div>
           </div>
         </div>
       </div>
       <div className="row p-2">
         <div className="col-6">
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-user"></i>
+          <div className="form-group">
+            <label>Num. de empleado:</label>
+            <span className="form-control-plaintext">
+              {employee && employee.employeeNumber
+                ? employee.employeeNumber
+                : ""}
             </span>
-            <Form.Control
-              id="firstName"
-              name="firstName"
-              placeholder="Nombre"
-              onChange={handleChange}
-            />
           </div>
         </div>
         <div className="col-6">
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-user"></i>
-            </span>
-            <Form.Control
-              id="lastName"
-              name="lastName"
-              onChange={handleChange}
-              placeholder="Apellidos"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="row p-2">
-        <div className="col-8">
-          <div className="p-inputgroup">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-id-card"></i>
-            </span>
-            <Form.Control
-              id="employeeRol"
-              name="employeeRol"
-              as="select"
-              onChange={handleChange}
+          <div className="form-group">
+            <label>Rol:</label>
+            <span
+              className="form-control-plaintext"
+              style={{ textTransform: "capitalize" }}
             >
-              <option value="">Choose...</option>
-              <option value="chofer">Chofer</option>
-              <option value="cargador">Cargador</option>
-              <option value="auxiliar">Auxiliar</option>
-            </Form.Control>
+              {employee && employee.employeeRol ? employee.employeeRol : ""}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="row p-2">
+        <div className="col-4">
+          <div className="form-group">
+            <label>Mes:</label>
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                <i className="pi pi-calendar"></i>
+              </span>
+              <InputNumber
+                inputId="month"
+                name="month"
+                onValueChange={(e) =>
+                  getDataForm({
+                    ...formData,
+                    month: e.value,
+                  })
+                }
+                min={1}
+                max={12}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-4">
+          <div className="form-group">
+            <label>Horas trabajadas:</label>
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                <i className="pi pi-clock"></i>
+              </span>
+              <Form.Control
+                type="number"
+                id="numberHours"
+                name="numberHours"
+                onChange={handleChange}
+                placeholder="Capturar las horas trabajadas"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-4">
+          <div className="form-group">
+            <label>Cantidad de entregas:</label>
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                <i className="pi pi-send"></i>
+              </span>
+              <Form.Control
+                type="number"
+                id="numberDeliveries"
+                name="numberDeliveries"
+                onChange={handleChange}
+                placeholder="Capturar las entregas"
+              />
+            </div>
           </div>
         </div>
       </div>
     </Form>
   );
 }
+
+export default FormNewMovementEmployee;

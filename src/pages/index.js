@@ -117,6 +117,7 @@ export default function Home({ modal, openModal, data, apiURL }) {
           hdlClose={handleClose}
           hdlSave={handleSave}
           modal={modal}
+          employees={employees}
         ></Modal>
       )}
     </>
@@ -124,7 +125,7 @@ export default function Home({ modal, openModal, data, apiURL }) {
 }
 
 export const getStaticProps = async () => {
-  const response = await axios.get(process.env.API_URL + "employees");
+  const response = await axios.get(`${process.env.API_URL}employees`);
   return {
     props: {
       data: response.data,
