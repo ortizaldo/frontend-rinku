@@ -3,7 +3,7 @@ import { SplitButton } from "primereact/splitbutton";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
-import Modal from "@/components/Modal/Modal";
+import Modal from "@/components/Modal/ModalForm";
 import axios from "axios";
 export default function Home({ modal, openModal, data }) {
   const [showModal, setShowModal] = useState(modal);
