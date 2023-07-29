@@ -26,9 +26,11 @@ export default function Home({ modal, openModal, data }) {
   };
 
   const getData = async () => {
-    setIsLoading(true);
     try {
       const response = await axios.get(`api/handlerEmployees?type=employees`, {
+        params: {
+          type: "employees",
+        },
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -38,8 +40,25 @@ export default function Home({ modal, openModal, data }) {
       setEmployees(response.data);
     } catch (error) {
       setErr(error.message);
-    } finally {
-      setIsLoading(false);
+    }
+  };
+
+  const deleteData = async () => {
+    try {
+      await axios.delete(`api/handlerEmployees`, {
+        params: {
+          type: "employees",
+          _id: employees._id,
+        },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      getData();
+    } catch (error) {
+      setErr(error.message);
     }
   };
 
@@ -55,7 +74,9 @@ export default function Home({ modal, openModal, data }) {
     {
       label: "Eliminar empleado",
       icon: "pi pi-times",
-      command: (e) => {},
+      command: (e) => {
+        deleteData();
+      },
     },
   ];
 
@@ -70,6 +91,14 @@ export default function Home({ modal, openModal, data }) {
           size="small"
           label="Editar"
           icon="pi pi-user-edit"
+          onClick={setShowModal({
+            show: true,
+            title: "Editar empleado",
+            newMovement: false,
+            newEmployee: false,
+            editEmployee: true,
+            data: option,
+          })}
           model={items}
         />
       </div>

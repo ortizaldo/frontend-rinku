@@ -15,7 +15,6 @@ export default function ModalComponent({
   employees,
 }) {
   const toast = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
   const [formData, setFormData] = useState({});
   const [formDataMovement, setFormDataMovement] = useState({});
@@ -45,15 +44,30 @@ export default function ModalComponent({
   };
 
   const postData = async (type) => {
-    const data = modal && modal.newEmployee ? formData : formDataMovement;
-    setIsLoading(true);
+    const data = modal && !modal.newMovement ? formData : formDataMovement;
     try {
-      await axios.post(`api/handlerEmployees?type=${type}`, data, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      if (modal.editEmployee) {
+        await axios.put(`api/handlerEmployees`, data, {
+          params: {
+            type,
+            _id: modal.data._id,
+          },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        await axios.post(`api/handlerEmployees`, data, {
+          params: {
+            type,
+          },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      }
 
       showToast("success", "Empleados", "Se guardo el registro con exitó");
       modal.show = false;
@@ -65,8 +79,6 @@ export default function ModalComponent({
         "Ocurrió un problema, intente de nuevo"
       );
       setErr(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -85,8 +97,12 @@ export default function ModalComponent({
           <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {modal.newEmployee && (
-            <FormNewEmployee getDataForm={getDataForm} formData={formData} />
+          {!modal.newMovement && (
+            <FormNewEmployee
+              getDataForm={getDataForm}
+              formData={formData}
+              data={modal.data}
+            />
           )}
           {modal.newMovement && (
             <FormNewMovementEmployee

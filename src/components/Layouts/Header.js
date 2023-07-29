@@ -30,6 +30,8 @@ export default function Header({ openModal }) {
                   title: "Registro de empleado",
                   newMovement: false,
                   newEmployee: true,
+                  data: null,
+                  editEmployee: false,
                 }),
             },
             {
@@ -41,6 +43,8 @@ export default function Header({ openModal }) {
                   title: "Captura de movimientos",
                   newEmployee: false,
                   newMovement: true,
+                  data: null,
+                  editEmployee: false,
                 }),
             },
           ],

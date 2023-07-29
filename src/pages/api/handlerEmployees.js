@@ -22,16 +22,15 @@ export default async function handler(req, res) {
       case "POST":
         baseURL += typePost ? typePost : `/new`;
         response = await axios.post(baseURL, body, options);
-        console.log(
-          "🚀 ~ file: handlerEmployees.js:25 ~ handler ~ baseURL:",
-          baseURL
-        );
         break;
       case "PUT":
+        response = await axios.put(baseURL, body, options);
         break;
       case "PATCH":
+        response = await axios.patch(baseURL, body, options);
         break;
       case "DELETE":
+        response = await axios.delete(baseURL, options);
         break;
       case "GET":
         response = await axios.get(baseURL + "?" + paramsToURL, options);
@@ -41,7 +40,6 @@ export default async function handler(req, res) {
     }
     return res.status(200).json(response.data);
   } catch (error) {
-    // console.log("🚀 ~ file: handlerEmployees.js:40 ~ handler ~ error:", error);
     return res.status(400).json({ error });
   }
 }

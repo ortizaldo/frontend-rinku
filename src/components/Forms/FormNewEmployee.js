@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
-export default function FormNewEmployee({ getDataForm, formData }) {
+export default function FormNewEmployee({ getDataForm, formData, employee }) {
   const handleChange = (event) => {
     getDataForm({
       ...formData,
@@ -22,6 +22,7 @@ export default function FormNewEmployee({ getDataForm, formData }) {
               <Form.Control
                 type="number"
                 id="employeeNumber"
+                value={employee.employeeNumber}
                 name="employeeNumber"
                 onChange={handleChange}
                 placeholder="Num. de empleado"
@@ -39,6 +40,7 @@ export default function FormNewEmployee({ getDataForm, formData }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
+                value={employee.firstName}
                 id="firstName"
                 name="firstName"
                 placeholder="Nombre"
@@ -55,6 +57,7 @@ export default function FormNewEmployee({ getDataForm, formData }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
+                value={employee.lastName}
                 id="lastName"
                 name="lastName"
                 onChange={handleChange}
@@ -73,6 +76,7 @@ export default function FormNewEmployee({ getDataForm, formData }) {
                 <i className="pi pi-id-card"></i>
               </span>
               <Form.Control
+                value={employee.employeeRol}
                 id="employeeRol"
                 name="employeeRol"
                 as="select"
