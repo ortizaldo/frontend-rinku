@@ -3,6 +3,9 @@ import { Button, Form } from "react-bootstrap";
 
 export default function FormNewEmployee({ getDataForm, formData, employee }) {
   const handleChange = (event) => {
+    if (employee) {
+      employee[event.target.name] = event.target.value;
+    }
     getDataForm({
       ...formData,
       [event.target.name]: event.target.value,

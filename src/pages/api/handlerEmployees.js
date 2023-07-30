@@ -4,6 +4,8 @@ export default async function handler(req, res) {
   const { method } = req;
   const { type } = req.query;
   const { typePost } = req.query;
+  const { _id } = req.query;
+  console.log("🚀 ~ file: handlerEmployees.js:8 ~ handler ~ _id:", _id);
   const { paramsToURL } = req.query;
   const { body } = req;
 
@@ -24,15 +26,15 @@ export default async function handler(req, res) {
         response = await axios.post(baseURL, body, options);
         break;
       case "PUT":
+        baseURL += `/${_id}`;
         response = await axios.put(baseURL, body, options);
         break;
-      case "PATCH":
-        response = await axios.patch(baseURL, body, options);
-        break;
       case "DELETE":
+        baseURL += `/${_id}`;
         response = await axios.delete(baseURL, options);
         break;
       case "GET":
+        baseURL += `?${paramsToURL}`;
         response = await axios.get(baseURL + "?" + paramsToURL, options);
         break;
       default:

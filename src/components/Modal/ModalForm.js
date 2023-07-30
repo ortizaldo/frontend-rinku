@@ -32,7 +32,7 @@ export default function ModalComponent({
   };
 
   const handleSave = () => {
-    postData(modal && modal.newEmployee ? "employees" : "employee-movements");
+    postData(modal && !modal.newMovement ? "employees" : "employee-movements");
   };
 
   const getDataForm = (_formData) => {
@@ -101,7 +101,7 @@ export default function ModalComponent({
             <FormNewEmployee
               getDataForm={getDataForm}
               formData={formData}
-              data={modal.data}
+              employee={modal.data}
             />
           )}
           {modal.newMovement && (
