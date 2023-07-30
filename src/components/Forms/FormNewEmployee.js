@@ -22,7 +22,7 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
               <Form.Control
                 type="number"
                 id="employeeNumber"
-                value={employee.employeeNumber}
+                value={employee ? employee.employeeNumber : ""}
                 name="employeeNumber"
                 onChange={handleChange}
                 placeholder="Num. de empleado"
@@ -40,7 +40,7 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                value={employee.firstName}
+                value={employee ? employee.firstName : ""}
                 id="firstName"
                 name="firstName"
                 placeholder="Nombre"
@@ -57,7 +57,7 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                value={employee.lastName}
+                value={employee ? employee.lastName : ""}
                 id="lastName"
                 name="lastName"
                 onChange={handleChange}
@@ -76,7 +76,7 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-id-card"></i>
               </span>
               <Form.Control
-                value={employee.employeeRol}
+                value={employee ? employee.employeeRol : ""}
                 id="employeeRol"
                 name="employeeRol"
                 as="select"

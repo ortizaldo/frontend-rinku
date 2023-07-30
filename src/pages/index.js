@@ -80,6 +80,19 @@ export default function Home({ modal, openModal, data }) {
     },
   ];
 
+  const save = (data) => {
+    modal = {
+      show: true,
+      title: "Editar empleado",
+      newMovement: false,
+      newEmployee: false,
+      data: employee,
+      editEmployee: true,
+    };
+
+    openModal(modal);
+  };
+
   const actionsTemplate = (option) => {
     items.map((item) => {
       item.data = option;
@@ -91,14 +104,7 @@ export default function Home({ modal, openModal, data }) {
           size="small"
           label="Editar"
           icon="pi pi-user-edit"
-          onClick={setShowModal({
-            show: true,
-            title: "Editar empleado",
-            newMovement: false,
-            newEmployee: false,
-            editEmployee: true,
-            data: option,
-          })}
+          onClick={save(option)}
           model={items}
         />
       </div>
