@@ -5,9 +5,9 @@ import { Column } from "primereact/column";
 import { useEffect, useRef, useState } from "react";
 import Modal from "@/components/Modal/ModalForm";
 import axios from "axios";
-import QueryString from "qs";
 import SidebarComponent from "@/components/Sidebar";
 import { Toast } from "primereact/toast";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 export default function Home({ modal, openModal, data }) {
   const toast = useRef(null);
   const [visibleRight, setVisibleRight] = useState(false);
@@ -80,7 +80,7 @@ export default function Home({ modal, openModal, data }) {
       });
 
       showToast("success", "Empleados", "Se elimino el registro con exitó");
-
+      setEmployee({});
       getData();
     } catch (error) {
       setErr(error.message);
@@ -100,13 +100,6 @@ export default function Home({ modal, openModal, data }) {
       label: "Editar",
       icon: "pi pi-user-edit",
       command: (e) => {
-        // setVisibleRight(true);
-        // setEmployee(e.item.data);
-        console.log(
-          "🚀 ~ file: index.js:80 ~ Home ~ e.item.data:",
-          e.item.data
-        );
-
         save(e.item.data);
       },
     },
@@ -114,7 +107,8 @@ export default function Home({ modal, openModal, data }) {
       label: "Eliminar empleado",
       icon: "pi pi-times",
       command: (e) => {
-        deleteData(e.item.data);
+        // deleteData(e.item.data);
+        confirmDelete(e.item.data);
       },
     },
   ];
@@ -136,11 +130,29 @@ export default function Home({ modal, openModal, data }) {
     );
   };
 
+  const accept = () => {
+    deleteData(employee);
+  };
+
+  const confirmDelete = (event) => {
+    setEmployee(event);
+    confirmDialog({
+      message: "Quieres eliminar esté registro?",
+      header: "Eliminar empleados",
+      icon: "pi pi-info-circle",
+      acceptClassName: "p-button-danger",
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept,
+    });
+  };
+
   useEffect(() => {}, [showModal, employees]);
 
   return (
     <>
       <Toast ref={toast} />
+      <ConfirmDialog />
       <Container fluid className="p-4">
         <div className="card">
           <SidebarComponent
