@@ -31,7 +31,6 @@ export default function Header({ openModal }) {
                   newMovement: false,
                   newEmployee: true,
                   data: {
-                    _id: "",
                     employeeNumber: "",
                     firstName: "",
                     lastName: "",

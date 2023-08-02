@@ -16,7 +16,6 @@ export default function ModalComponent({
   employee,
   setEmployee,
 }) {
-  console.log("🚀 ~ file: ModalForm.js:19 ~ employee:", employee);
   const {
     register,
     handleSubmit,
@@ -28,7 +27,6 @@ export default function ModalComponent({
   const toast = useRef(null);
   const [err, setErr] = useState("");
   const [formData, setFormData] = useState({
-    _id: modal && modal.data ? modal.data._id : "",
     employeeNumber: modal && modal.data ? modal.data.employeeNumber : "",
     firstName: modal && modal.data ? modal.data.firstName : "",
     lastName: modal && modal.data ? modal.data.lastName : "",
@@ -59,7 +57,6 @@ export default function ModalComponent({
 
   const resetForm = () => {
     setFormData({
-      _id: "",
       employeeNumber: "",
       firstName: "",
       lastName: "",

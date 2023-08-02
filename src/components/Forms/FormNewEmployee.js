@@ -7,9 +7,11 @@ export default function FormNewEmployee({
   employee,
   setEmployee,
 }) {
-  console.log("🚀 ~ file: FormNewEmployee.js:10 ~ employee:", employee);
   const handleChange = (event) => {
     const { name, value } = event.target;
+    if (employee) {
+      employee[event.target.name] = event.target.value;
+    }
     getDataForm({
       ...formData,
       [name]: value,
@@ -37,9 +39,7 @@ export default function FormNewEmployee({
                 id="employeeNumber"
                 name="employeeNumber"
                 defaultValue={employee.employeeNumber}
-                onChange={(e) => {
-                  handleChange;
-                }}
+                onChange={handleChange}
                 placeholder="Num. de empleado"
               />
             </div>
@@ -60,9 +60,7 @@ export default function FormNewEmployee({
                 name="firstName"
                 placeholder="Nombre"
                 defaultValue={employee.firstName}
-                onChange={(e) => {
-                  handleChange;
-                }}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -79,9 +77,7 @@ export default function FormNewEmployee({
                 id="lastName"
                 name="lastName"
                 defaultValue={employee.lastName}
-                onChange={(e) => {
-                  handleChange;
-                }}
+                onChange={handleChange}
                 placeholder="Apellidos"
               />
             </div>
@@ -102,9 +98,7 @@ export default function FormNewEmployee({
                 name="employeeRol"
                 as="select"
                 defaultValue={employee.employeeRol}
-                onChange={(e) => {
-                  handleChange;
-                }}
+                onChange={handleChange}
               >
                 <option value="">Seleccionar rol...</option>
                 <option value="chofer">Chofer</option>

@@ -5,7 +5,6 @@ export default async function handler(req, res) {
   const { type } = req.query;
   const { typePost } = req.query;
   const { _id } = req.query;
-  console.log("🚀 ~ file: handlerEmployees.js:8 ~ handler ~ _id:", _id);
   const { paramsToURL } = req.query;
   const { body } = req;
 
@@ -26,10 +25,20 @@ export default async function handler(req, res) {
         response = await axios.post(baseURL, body, options);
         break;
       case "PUT":
+        console.log(
+          "%chandlerEmployees.js line:28 _id",
+          "color: #007acc;",
+          _id
+        );
         baseURL += `/${_id}`;
         response = await axios.put(baseURL, body, options);
         break;
       case "DELETE":
+        console.log(
+          "%chandlerEmployees.js line:28 _id",
+          "color: #007acc;",
+          _id
+        );
         baseURL += `/${_id}`;
         response = await axios.delete(baseURL, options);
         break;

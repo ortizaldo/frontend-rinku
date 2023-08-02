@@ -115,10 +115,6 @@ export default function Home({ modal, openModal, data }) {
   };
 
   const actionBodyTemplate = (rowData) => {
-    console.log(
-      "🚀 ~ file: index.js:162 ~ actionBodyTemplate ~ rowData:",
-      rowData
-    );
     return (
       <React.Fragment>
         <Button
@@ -184,13 +180,6 @@ export default function Home({ modal, openModal, data }) {
               header="Rol"
               style={{ width: "25%", textTransform: "capitalize" }}
             ></Column>
-            {/* <Column
-              field="_id"
-              header=""
-              dataType="string"
-              bodyClassName="text-center"
-              body={actionsTemplate}
-            /> */}
             <Column
               body={actionBodyTemplate}
               exportable={false}
