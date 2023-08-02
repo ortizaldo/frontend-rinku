@@ -8,12 +8,20 @@ import axios from "axios";
 import SidebarComponent from "@/components/Sidebar";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import React from "react";
+import { Button } from "primereact/button";
 export default function Home({ modal, openModal, data }) {
   const toast = useRef(null);
   const [visibleRight, setVisibleRight] = useState(false);
   const [showModal, setShowModal] = useState(modal);
   const [employees, setEmployees] = useState(data);
-  const [employee, setEmployee] = useState([]);
+  const [employee, setEmployee] = useState({
+    _id: "",
+    employeeNumber: "",
+    firstName: "",
+    lastName: "",
+    employeeRol: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
   const handleClose = (value) => {
@@ -53,7 +61,7 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
-  const save = (data) => {
+  const editData = (data) => {
     modal = {
       show: true,
       title: "Editar empleado",
@@ -62,6 +70,8 @@ export default function Home({ modal, openModal, data }) {
       data: data,
       editEmployee: true,
     };
+
+    setEmployee(data);
 
     openModal(modal);
   };
@@ -87,49 +97,6 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
-  const items = [
-    {
-      label: "Ver movimientos",
-      icon: "pi pi-search",
-      command: (e) => {
-        setVisibleRight(true);
-        setEmployee(e.item.data);
-      },
-    },
-    {
-      label: "Editar",
-      icon: "pi pi-user-edit",
-      command: (e) => {
-        save(e.item.data);
-      },
-    },
-    {
-      label: "Eliminar empleado",
-      icon: "pi pi-times",
-      command: (e) => {
-        // deleteData(e.item.data);
-        confirmDelete(e.item.data);
-      },
-    },
-  ];
-
-  const actionsTemplate = (option) => {
-    items.map((item) => {
-      item.data = option;
-    });
-    return (
-      <div className="flex">
-        <SplitButton
-          text
-          size="small"
-          label="Acciones"
-          icon="pi pi-user"
-          model={items}
-        />
-      </div>
-    );
-  };
-
   const accept = () => {
     deleteData(employee);
   };
@@ -145,6 +112,45 @@ export default function Home({ modal, openModal, data }) {
       rejectLabel: "No",
       accept,
     });
+  };
+
+  const actionBodyTemplate = (rowData) => {
+    console.log(
+      "🚀 ~ file: index.js:162 ~ actionBodyTemplate ~ rowData:",
+      rowData
+    );
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-pencil"
+          rounded
+          outlined
+          className="mr-2"
+          onClick={() => {
+            editData(rowData);
+          }}
+        />
+        <Button
+          style={{ marginLeft: "3px" }}
+          icon="pi pi-search"
+          rounded
+          outlined
+          severity="info"
+          onClick={() => {
+            setVisibleRight(true);
+            setEmployee(rowData);
+          }}
+        />
+        <Button
+          style={{ marginLeft: "3px" }}
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDelete(rowData)}
+        />
+      </React.Fragment>
+    );
   };
 
   useEffect(() => {}, [showModal, employees]);
@@ -178,13 +184,18 @@ export default function Home({ modal, openModal, data }) {
               header="Rol"
               style={{ width: "25%", textTransform: "capitalize" }}
             ></Column>
-            <Column
+            {/* <Column
               field="_id"
               header=""
               dataType="string"
               bodyClassName="text-center"
               body={actionsTemplate}
-            />
+            /> */}
+            <Column
+              body={actionBodyTemplate}
+              exportable={false}
+              style={{ minWidth: "12rem" }}
+            ></Column>
           </DataTable>
         </div>
       </Container>
@@ -194,6 +205,8 @@ export default function Home({ modal, openModal, data }) {
           hdlSave={handleSave}
           modal={modal}
           employees={employees}
+          employee={employee}
+          setEmployee={setEmployee}
         ></Modal>
       )}
     </>

@@ -1,15 +1,24 @@
-import { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import _ from "underscore";
 
-export default function FormNewEmployee({ getDataForm, formData, employee }) {
+export default function FormNewEmployee({
+  formData,
+  getDataForm,
+  employee,
+  setEmployee,
+}) {
+  console.log("🚀 ~ file: FormNewEmployee.js:10 ~ employee:", employee);
   const handleChange = (event) => {
-    if (employee) {
-      employee[event.target.name] = event.target.value;
-    }
+    const { name, value } = event.target;
     getDataForm({
       ...formData,
-      [event.target.name]: event.target.value,
+      [name]: value,
     });
+
+    employee = {
+      ...employee,
+      [name]: value,
+    };
   };
 
   return (
@@ -23,11 +32,14 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-hashtag"></i>
               </span>
               <Form.Control
+                // {...register("employeeNumber", { required: true })}
                 type="number"
                 id="employeeNumber"
-                value={employee && employee.employeeNumber}
                 name="employeeNumber"
-                onChange={handleChange}
+                defaultValue={employee.employeeNumber}
+                onChange={(e) => {
+                  handleChange;
+                }}
                 placeholder="Num. de empleado"
               />
             </div>
@@ -43,11 +55,14 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                value={employee && employee.firstName}
+                // {...register("firstName", { required: true })}
                 id="firstName"
                 name="firstName"
                 placeholder="Nombre"
-                onChange={handleChange}
+                defaultValue={employee.firstName}
+                onChange={(e) => {
+                  handleChange;
+                }}
               />
             </div>
           </div>
@@ -60,10 +75,13 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                value={employee && employee.lastName}
+                // {...register("lastName", { required: true })}
                 id="lastName"
                 name="lastName"
-                onChange={handleChange}
+                defaultValue={employee.lastName}
+                onChange={(e) => {
+                  handleChange;
+                }}
                 placeholder="Apellidos"
               />
             </div>
@@ -79,11 +97,14 @@ export default function FormNewEmployee({ getDataForm, formData, employee }) {
                 <i className="pi pi-id-card"></i>
               </span>
               <Form.Control
-                value={employee && employee.employeeRol}
+                // {...register("employeeRol", { required: true })}
                 id="employeeRol"
                 name="employeeRol"
                 as="select"
-                onChange={handleChange}
+                defaultValue={employee.employeeRol}
+                onChange={(e) => {
+                  handleChange;
+                }}
               >
                 <option value="">Seleccionar rol...</option>
                 <option value="chofer">Chofer</option>

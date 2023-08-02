@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import FormNewEmployee from "../Forms/FormNewEmployee";
-import ReactDOM from "react-dom";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import _ from "underscore";
 import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
@@ -13,10 +13,28 @@ export default function ModalComponent({
   hdlClose,
   hdlSave,
   employees,
+  employee,
+  setEmployee,
 }) {
+  console.log("🚀 ~ file: ModalForm.js:19 ~ employee:", employee);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const toast = useRef(null);
   const [err, setErr] = useState("");
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    _id: modal && modal.data ? modal.data._id : "",
+    employeeNumber: modal && modal.data ? modal.data.employeeNumber : "",
+    firstName: modal && modal.data ? modal.data.firstName : "",
+    lastName: modal && modal.data ? modal.data.lastName : "",
+    employeeRol: modal && modal.data ? modal.data.employeeRol : "",
+  });
+
   const [formDataMovement, setFormDataMovement] = useState({});
 
   const showToast = (severity, summary, detail) => {
@@ -28,23 +46,51 @@ export default function ModalComponent({
   };
 
   const handleClose = () => {
+    resetForm();
     hdlClose({ show: false });
   };
 
-  const handleSave = () => {
-    postData(modal && !modal.newMovement ? "employees" : "employee-movements");
+  const onSubmit = (data) => {
+    postData(
+      modal && !modal.newMovement ? formData : formDataMovement,
+      modal && !modal.newMovement ? "employees" : "employee-movements"
+    );
   };
 
-  const getDataForm = (_formData) => {
-    setFormData(_formData);
+  const resetForm = () => {
+    setFormData({
+      _id: "",
+      employeeNumber: "",
+      firstName: "",
+      lastName: "",
+      employeeRol: "",
+    });
+
+    setEmployee({
+      _id: "",
+      employeeNumber: "",
+      firstName: "",
+      lastName: "",
+      employeeRol: "",
+    });
+
+    reset();
   };
 
   const getDataFormEmpMovement = (_formData) => {
     setFormDataMovement(_formData);
+    console.log(
+      "🚀 ~ file: ModalForm.js:82 ~ getDataFormEmpMovement ~ _formData:",
+      _formData
+    );
   };
 
-  const postData = async (type) => {
-    const data = modal && !modal.newMovement ? formData : formDataMovement;
+  const getDataForm = (_formData) => {
+    setFormData(_formData);
+    setEmployee(formData);
+  };
+
+  const postData = async (data, type) => {
     try {
       if (modal.editEmployee) {
         await axios.put(`api/handlerEmployees`, data, {
@@ -71,6 +117,7 @@ export default function ModalComponent({
 
       showToast("success", "Empleados", "Se guardo el registro con exitó");
       modal.show = false;
+      reset();
       hdlSave(modal);
     } catch (error) {
       showToast(
@@ -99,9 +146,10 @@ export default function ModalComponent({
         <Modal.Body>
           {!modal.newMovement && (
             <FormNewEmployee
-              getDataForm={getDataForm}
               formData={formData}
-              employee={modal.data}
+              employee={employee}
+              getDataForm={getDataForm}
+              setEmployee={setEmployee}
             />
           )}
           {modal.newMovement && (
@@ -116,7 +164,7 @@ export default function ModalComponent({
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button variant="primary" onClick={handleSubmit(onSubmit)}>
             Guardar
           </Button>
         </Modal.Footer>
