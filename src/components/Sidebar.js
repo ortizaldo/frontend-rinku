@@ -5,6 +5,15 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import axios from "axios";
 
+/**
+ * Renders the SidebarComponent and handles various events and state changes.
+ *
+ * @param {Object} props - The props of the SidebarComponent.
+ * @param {function} props.setVisible - The function to set the visibility of the sidebar.
+ * @param {boolean} props.visibleRight - A boolean indicating whether the sidebar is visible or not.
+ * @param {Object} props.employee - The employee object.
+ * @return {JSX.Element} The rendered SidebarComponent.
+ */
 export default function SidebarComponent({
   setVisible,
   visibleRight,
@@ -13,15 +22,33 @@ export default function SidebarComponent({
   const [movementEmployees, setMovementEmployees] = useState([]);
   const [err, setErr] = useState("");
 
+  /**
+   * Handles the change event.
+   *
+   * @param {Event} event - The event object.
+   * @return {undefined} This function does not return a value.
+   */
   const handleChange = (event) => {
     getDataMovements(event.target.value);
   };
 
+  /**
+   * Hides the element and resets the movement employees.
+   *
+   * @param {type} paramName - description of parameter
+   * @return {type} description of return value
+   */
   const hide = () => {
     setVisible();
     setMovementEmployees([]);
   };
 
+  /**
+   * Retrieves data movements for a specific month.
+   *
+   * @param {string} month - The month for which to retrieve data movements.
+   * @return {Promise} A promise that resolves with the retrieved data movements.
+   */
   const getDataMovements = async (month) => {
     try {
       const response = await axios.post(

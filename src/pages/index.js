@@ -10,6 +10,15 @@ import { Toast } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import React from "react";
 import { Button } from "primereact/button";
+
+/**
+ * A description of the entire function.
+ *
+ * @param {Object} modal - The modal object.
+ * @param {Function} openModal - The function to open the modal.
+ * @param {Array} data - The data array.
+ * @return {ReactNode} The rendered React Fragment.
+ */
 export default function Home({ modal, openModal, data }) {
   const toast = useRef(null);
   const [visibleRight, setVisibleRight] = useState(false);
@@ -24,10 +33,24 @@ export default function Home({ modal, openModal, data }) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
+
+  /**
+   * Updates the state of the modal and triggers the openModal function.
+   *
+   * @param {any} value - The new value for the showModal state.
+   * @return {undefined} This function does not return a value.
+   */
   const handleClose = (value) => {
     setShowModal(value);
     openModal(value);
   };
+
+  /**
+   * Handles the save operation.
+   *
+   * @param {type} value - The value to be saved.
+   * @return {type} - The result of the save operation.
+   */
   const handleSave = (value) => {
     setShowModal(showModal);
     openModal(value);
@@ -35,6 +58,13 @@ export default function Home({ modal, openModal, data }) {
     getData();
   };
 
+  /**
+   * Shows a toast message with the given severity, summary, and detail.
+   *
+   * @param {string} severity - The severity of the toast message.
+   * @param {string} summary - The summary of the toast message.
+   * @param {string} detail - The detail of the toast message.
+   */
   const showToast = (severity, summary, detail) => {
     toast.current.show({
       severity,
@@ -43,6 +73,11 @@ export default function Home({ modal, openModal, data }) {
     });
   };
 
+  /**
+   * Fetches data from the API and sets the employees state.
+   *
+   * @return {Promise<void>} A promise that resolves once the data has been fetched and the employees state has been updated.
+   */
   const getData = async () => {
     try {
       const response = await axios.get(`api/handlerEmployees`, {
@@ -61,6 +96,12 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
+  /**
+   * Deletes data from the API.
+   *
+   * @param {Object} emp - The employee object to delete.
+   * @return {Promise} A promise that resolves once the data is deleted.
+   */
   const editData = (data) => {
     modal = {
       show: true,
@@ -97,10 +138,21 @@ export default function Home({ modal, openModal, data }) {
     }
   };
 
+  /**
+   * Deletes the employee data.
+   *
+   * @param {Object} employee - The employee object to delete.
+   */
   const accept = () => {
     deleteData(employee);
   };
 
+  /**
+   * Sets the selected employee and displays a confirmation dialog for deleting a record.
+   *
+   * @param {Event} event - The event that triggered the function.
+   * @return {void} This function does not return a value.
+   */
   const confirmDelete = (event) => {
     setEmployee(event);
     confirmDialog({
@@ -114,6 +166,12 @@ export default function Home({ modal, openModal, data }) {
     });
   };
 
+  /**
+   * Generate the function comment for the given function body.
+   *
+   * @param {object} rowData - the data for the row
+   * @return {ReactNode} the rendered React Fragment
+   */
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -202,6 +260,11 @@ export default function Home({ modal, openModal, data }) {
   );
 }
 
+/**
+ * Retrieves static props from an API endpoint.
+ *
+ * @return {object} The static props containing the data.
+ */
 export const getStaticProps = async () => {
   const response = await axios.get(`${process.env.API_URL}employees`);
   return {

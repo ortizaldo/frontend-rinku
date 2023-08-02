@@ -8,6 +8,17 @@ import axios from "axios";
 import _ from "underscore";
 import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
 
+/**
+ * Generate the function comment for the given function body.
+ *
+ * @param {Object} modal - The modal object.
+ * @param {function} hdlClose - The function to handle modal close.
+ * @param {function} hdlSave - The function to handle modal save.
+ * @param {Array} employees - The array of employees.
+ * @param {Object} employee - The employee object.
+ * @param {function} setEmployee - The function to set employee object.
+ * @return {JSX.Element} - The JSX element of the modal component.
+ */
 export default function ModalComponent({
   modal,
   hdlClose,
@@ -35,6 +46,13 @@ export default function ModalComponent({
 
   const [formDataMovement, setFormDataMovement] = useState({});
 
+  /**
+   * Shows a toast notification with the specified severity, summary, and detail.
+   *
+   * @param {string} severity - The severity of the toast notification.
+   * @param {string} summary - The summary text of the toast notification.
+   * @param {string} detail - The detailed text of the toast notification.
+   */
   const showToast = (severity, summary, detail) => {
     toast.current.show({
       severity,
@@ -43,18 +61,35 @@ export default function ModalComponent({
     });
   };
 
+  /**
+   * Closes the handler and resets the form.
+   *
+   * @return {undefined} No return value.
+   */
   const handleClose = () => {
     resetForm();
     hdlClose({ show: false });
   };
 
-  const onSubmit = (data) => {
+  /**
+   * Submit the form data to the server.
+   *
+   * @param {object} formData - The form data to be submitted.
+   * @param {string} endpoint - The endpoint to which the data should be sent.
+   * @return {void} No return value.
+   */
+  const onSubmit = () => {
     postData(
       modal && !modal.newMovement ? formData : formDataMovement,
       modal && !modal.newMovement ? "employees" : "employee-movements"
     );
   };
 
+  /**
+   * Resets the form by setting the form data and employee state to empty values and calling the reset function.
+   *
+   * @return {void}
+   */
   const resetForm = () => {
     setFormData({
       employeeNumber: "",
@@ -74,6 +109,12 @@ export default function ModalComponent({
     reset();
   };
 
+  /**
+   * Set the form data for employee movement and log the data to the console.
+   *
+   * @param {any} _formData - The form data to set for employee movement.
+   * @return {undefined} This function does not return a value.
+   */
   const getDataFormEmpMovement = (_formData) => {
     setFormDataMovement(_formData);
     console.log(
@@ -82,11 +123,24 @@ export default function ModalComponent({
     );
   };
 
+  /**
+   * Generates a function comment for the given function body.
+   *
+   * @param {type} _formData - the data to be set as form data
+   * @return {type} description of return value
+   */
   const getDataForm = (_formData) => {
     setFormData(_formData);
     setEmployee(formData);
   };
 
+  /**
+   * Posts data to the server.
+   *
+   * @param {Object} data - The data to be posted.
+   * @param {string} type - The type of data being posted.
+   * @return {Promise<void>} A Promise that resolves when the post request is successful.
+   */
   const postData = async (data, type) => {
     try {
       if (modal.editEmployee) {

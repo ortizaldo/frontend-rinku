@@ -1,5 +1,11 @@
 import axios from "axios";
-
+/**
+ * Asynchronous function that handles an API request.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Object} The response data.
+ */
 export default async function handler(req, res) {
   const { method } = req;
   const { type } = req.query;
@@ -25,20 +31,10 @@ export default async function handler(req, res) {
         response = await axios.post(baseURL, body, options);
         break;
       case "PUT":
-        console.log(
-          "%chandlerEmployees.js line:28 _id",
-          "color: #007acc;",
-          _id
-        );
         baseURL += `/${_id}`;
         response = await axios.put(baseURL, body, options);
         break;
       case "DELETE":
-        console.log(
-          "%chandlerEmployees.js line:28 _id",
-          "color: #007acc;",
-          _id
-        );
         baseURL += `/${_id}`;
         response = await axios.delete(baseURL, options);
         break;

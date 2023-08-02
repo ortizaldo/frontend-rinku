@@ -14,6 +14,13 @@ import _ from "underscore";
 function FormNewMovementEmployee({ getDataForm, formData, employees }) {
   const [employee, setEmployee] = useState({});
   const [err, setErr] = useState("");
+
+  /**
+   * Handles the change event for the input field.
+   *
+   * @param {Event} event - The event object representing the change event.
+   * @return {void} No return value.
+   */
   const handleChange = (event) => {
     getDataForm({
       ...formData,

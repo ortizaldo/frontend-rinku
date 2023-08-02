@@ -1,12 +1,27 @@
 import { Form } from "react-bootstrap";
 import _ from "underscore";
 
+/**
+ * Renders a form for creating a new employee.
+ *
+ * @param {object} formData - The form data.
+ * @param {function} getDataForm - The function to get the form data.
+ * @param {object} employee - The employee object.
+ * @param {function} setEmployee - The function to set the employee object.
+ * @return {JSX.Element} - The form component.
+ */
 export default function FormNewEmployee({
   formData,
   getDataForm,
   employee,
   setEmployee,
 }) {
+  /**
+   * Handles the change event and updates the form data and employee object accordingly.
+   *
+   * @param {object} event - The event object.
+   * @return {void}
+   */
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (employee) {
