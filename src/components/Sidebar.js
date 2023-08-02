@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "primereact/sidebar";
-import { Col, Container, Modal, Row } from "react-bootstrap";
+import { Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputNumber } from "primereact/inputnumber";
 import axios from "axios";
-import QueryString from "qs";
 
 export default function SidebarComponent({
   setVisible,
@@ -16,7 +14,7 @@ export default function SidebarComponent({
   const [err, setErr] = useState("");
 
   const handleChange = (event) => {
-    getDataMovements(event.value);
+    getDataMovements(event.target.value);
   };
 
   const hide = () => {
@@ -44,11 +42,6 @@ export default function SidebarComponent({
           },
         }
       );
-      console.log(
-        "%cSidebar.js line:43 response.data",
-        "color: #007acc;",
-        response.data
-      );
       response.data.data.month = month;
       setMovementEmployees([response.data.data]);
     } catch (error) {
@@ -71,13 +64,25 @@ export default function SidebarComponent({
                 <span className="p-inputgroup-addon">
                   <i className="pi pi-calendar"></i>
                 </span>
-                <InputNumber
-                  inputId="month"
+                <Form.Control
+                  id="month"
                   name="month"
-                  onValueChange={(e) => handleChange(e)}
-                  min={1}
-                  max={12}
-                />
+                  as="select"
+                  onChange={handleChange}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </Form.Control>
               </div>
             </div>
           </div>
