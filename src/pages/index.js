@@ -129,22 +129,12 @@ export default function Home({ modal, openModal, data }) {
           "Content-Type": "application/json",
         },
       });
-
       showToast("success", "Empleados", "Se elimino el registro con exitó");
       setEmployee({});
       getData();
     } catch (error) {
       setErr(error.message);
     }
-  };
-
-  /**
-   * Deletes the employee data.
-   *
-   * @param {Object} employee - The employee object to delete.
-   */
-  const accept = () => {
-    deleteData(employee);
   };
 
   /**
@@ -162,7 +152,9 @@ export default function Home({ modal, openModal, data }) {
       acceptClassName: "p-button-danger",
       acceptLabel: "Si",
       rejectLabel: "No",
-      accept,
+      accept: () => {
+        deleteData(event);
+      },
     });
   };
 
