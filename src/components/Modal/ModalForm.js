@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import FormNewEmployee from "../Forms/FormEmployee";
+import FormEmployee from "../Forms/FormEmployee";
 import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -172,7 +172,7 @@ export default function ModalComponent({
         </Modal.Header>
         <Modal.Body>
           {!modal.newMovement && (
-            <FormNewEmployee
+            <FormEmployee
               register={register}
               errors={errors}
               setValue={setValue}
