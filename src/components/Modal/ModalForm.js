@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import axios from "axios";
 import _ from "underscore";
-import { Alert } from "react-bootstrap";
 
 /**
  * Generate the function comment for the given function body.
@@ -31,33 +30,24 @@ export default function ModalComponent({
   setEmployee,
 }) {
   const validationSchema = Yup.object().shape({
-    employeeNumber: Yup.number().required("Employee number is required"),
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    employeeRol: Yup.string().required("Employee role is required"),
+    employeeNumber: Yup.string().required("Numero de empleado es requerido"),
+    firstName: Yup.string().required("Nombre es requerido"),
+    lastName: Yup.string().required("Apellidos es requerido"),
+    employeeRol: Yup.string().required("Rol es requerido"),
   });
+
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
     setValue,
-    getValues,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const toast = useRef(null);
   const [err, setErr] = useState("");
-  const [formData, setFormData] = useState({
-    employeeNumber: modal && modal.data ? modal.data.employeeNumber : "",
-    firstName: modal && modal.data ? modal.data.firstName : "",
-    lastName: modal && modal.data ? modal.data.lastName : "",
-    employeeRol: modal && modal.data ? modal.data.employeeRol : "",
-  });
-
-  const [formDataMovement, setFormDataMovement] = useState({});
 
   /**
    * Shows a toast notification with the specified severity, summary, and detail.
@@ -104,13 +94,6 @@ export default function ModalComponent({
    * @return {void}
    */
   const resetForm = () => {
-    setFormData({
-      employeeNumber: "",
-      firstName: "",
-      lastName: "",
-      employeeRol: "",
-    });
-
     setEmployee({
       _id: "",
       employeeNumber: "",
@@ -120,31 +103,6 @@ export default function ModalComponent({
     });
 
     reset();
-  };
-
-  /**
-   * Set the form data for employee movement and log the data to the console.
-   *
-   * @param {any} _formData - The form data to set for employee movement.
-   * @return {undefined} This function does not return a value.
-   */
-  const getDataFormEmpMovement = (_formData) => {
-    setFormDataMovement(_formData);
-    console.log(
-      "🚀 ~ file: ModalForm.js:82 ~ getDataFormEmpMovement ~ _formData:",
-      _formData
-    );
-  };
-
-  /**
-   * Generates a function comment for the given function body.
-   *
-   * @param {type} _formData - the data to be set as form data
-   * @return {type} description of return value
-   */
-  const getDataForm = (_formData) => {
-    setFormData(_formData);
-    setEmployee(formData);
   };
 
   /**
@@ -193,16 +151,6 @@ export default function ModalComponent({
     }
   };
 
-  const displayErrors = (_errors) => {
-    return _errors.map((error, idx) => {
-      return (
-        <Alert key={idx} variant="danger">
-          {error && error.message}
-        </Alert>
-      );
-    });
-  };
-
   useEffect(() => {
     const fields = ["employeeNumber", "firstName", "lastName", "employeeRol"];
     fields.forEach((field) => setValue(field, employee[field]));
@@ -223,15 +171,18 @@ export default function ModalComponent({
           <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {Object.values(errors).length > 0 &&
-            displayErrors(Object.values(errors))}
           {!modal.newMovement && (
-            <FormNewEmployee register={register} errors={errors} />
+            <FormNewEmployee
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              setEmployee={setEmployee}
+              employee={employee}
+            />
           )}
           {modal.newMovement && (
             <FormNewMovementEmployee
               getDataForm={getDataFormEmpMovement}
-              formData={formDataMovement}
               employees={employees}
             />
           )}
