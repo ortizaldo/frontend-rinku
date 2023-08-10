@@ -3,10 +3,13 @@ import { Toast } from "primereact/toast";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import FormNewEmployee from "../Forms/FormNewEmployee";
+import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import axios from "axios";
 import _ from "underscore";
-import FormNewMovementEmployee from "../Forms/FormNewMovementEmployee";
+import { Alert } from "react-bootstrap";
 
 /**
  * Generate the function comment for the given function body.
@@ -27,13 +30,23 @@ export default function ModalComponent({
   employee,
   setEmployee,
 }) {
+  const validationSchema = Yup.object().shape({
+    employeeNumber: Yup.number().required("Employee number is required"),
+    firstName: Yup.string().required("First Name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    employeeRol: Yup.string().required("Employee role is required"),
+  });
   const {
     register,
     handleSubmit,
     watch,
     reset,
     formState: { errors },
-  } = useForm();
+    setValue,
+    getValues,
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
 
   const toast = useRef(null);
   const [err, setErr] = useState("");
@@ -78,9 +91,9 @@ export default function ModalComponent({
    * @param {string} endpoint - The endpoint to which the data should be sent.
    * @return {void} No return value.
    */
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     postData(
-      modal && !modal.newMovement ? formData : formDataMovement,
+      data,
       modal && !modal.newMovement ? "employees" : "employee-movements"
     );
   };
@@ -180,6 +193,21 @@ export default function ModalComponent({
     }
   };
 
+  const displayErrors = (_errors) => {
+    return _errors.map((error, idx) => {
+      return (
+        <Alert key={idx} variant="danger">
+          {error && error.message}
+        </Alert>
+      );
+    });
+  };
+
+  useEffect(() => {
+    const fields = ["employeeNumber", "firstName", "lastName", "employeeRol"];
+    fields.forEach((field) => setValue(field, employee[field]));
+  });
+
   return (
     <>
       <Toast ref={toast} />
@@ -195,13 +223,10 @@ export default function ModalComponent({
           <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {Object.values(errors).length > 0 &&
+            displayErrors(Object.values(errors))}
           {!modal.newMovement && (
-            <FormNewEmployee
-              formData={formData}
-              employee={employee}
-              getDataForm={getDataForm}
-              setEmployee={setEmployee}
-            />
+            <FormNewEmployee register={register} errors={errors} />
           )}
           {modal.newMovement && (
             <FormNewMovementEmployee

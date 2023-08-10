@@ -10,34 +10,7 @@ import _ from "underscore";
  * @param {function} setEmployee - The function to set the employee object.
  * @return {JSX.Element} - The form component.
  */
-export default function FormNewEmployee({
-  formData,
-  getDataForm,
-  employee,
-  setEmployee,
-}) {
-  /**
-   * Handles the change event and updates the form data and employee object accordingly.
-   *
-   * @param {object} event - The event object.
-   * @return {void}
-   */
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    if (employee) {
-      employee[event.target.name] = event.target.value;
-    }
-    getDataForm({
-      ...formData,
-      [name]: value,
-    });
-
-    employee = {
-      ...employee,
-      [name]: value,
-    };
-  };
-
+export default function FormNewEmployee({ register, errors }) {
   return (
     <Form id="formNewEmployee">
       <div className="row p-2">
@@ -49,13 +22,14 @@ export default function FormNewEmployee({
                 <i className="pi pi-hashtag"></i>
               </span>
               <Form.Control
-                // {...register("employeeNumber", { required: true })}
+                {...register("employeeNumber", {
+                  required: "Employee number is required",
+                })}
                 type="number"
                 id="employeeNumber"
                 name="employeeNumber"
-                defaultValue={employee.employeeNumber}
-                onChange={handleChange}
                 placeholder="Num. de empleado"
+                className={`form-control ${errors.title ? "is-invalid" : ""}`}
               />
             </div>
           </div>
@@ -70,12 +44,10 @@ export default function FormNewEmployee({
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                // {...register("firstName", { required: true })}
+                {...register("firstName", { required: true })}
                 id="firstName"
                 name="firstName"
                 placeholder="Nombre"
-                defaultValue={employee.firstName}
-                onChange={handleChange}
               />
             </div>
           </div>
@@ -88,11 +60,9 @@ export default function FormNewEmployee({
                 <i className="pi pi-user"></i>
               </span>
               <Form.Control
-                // {...register("lastName", { required: true })}
+                {...register("lastName", { required: true })}
                 id="lastName"
                 name="lastName"
-                defaultValue={employee.lastName}
-                onChange={handleChange}
                 placeholder="Apellidos"
               />
             </div>
@@ -108,12 +78,10 @@ export default function FormNewEmployee({
                 <i className="pi pi-id-card"></i>
               </span>
               <Form.Control
-                // {...register("employeeRol", { required: true })}
+                {...register("employeeRol", { required: true })}
                 id="employeeRol"
                 name="employeeRol"
                 as="select"
-                defaultValue={employee.employeeRol}
-                onChange={handleChange}
               >
                 <option value="">Seleccionar rol...</option>
                 <option value="chofer">Chofer</option>
